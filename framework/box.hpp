@@ -1,9 +1,13 @@
 #ifndef BUW_BOX_HPP
 #define BUW_BOX_HPP
-#include <string>
 #include <glm/vec3.hpp>
-#include "shape.hpp"
 #include <stdlib.h>
+#include <string>
+#include <algorithm>
+#include "shape.hpp"
+#include "ray.hpp"
+
+
 
 class Box : public Shape
 {	
@@ -11,7 +15,7 @@ class Box : public Shape
 	//Constructor
 	Box();
 	Box(glm::vec3 const& max, glm::vec3 const& min);
-	Box(glm::vec3 const& max, glm::vec3 const& min, std::string name, Color color);
+	Box(glm::vec3 const& max, glm::vec3 const& min, std::string name, Material material);
 	~Box();
 	glm::vec3 max() const;
 
@@ -22,6 +26,8 @@ class Box : public Shape
 	double area() const override;
 
 	std::ostream& print(std::ostream & os) const override;
+
+	bool intersectBox(Ray const&) const; 
 
 	private:
 		glm::vec3 _max;

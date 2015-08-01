@@ -1,18 +1,16 @@
 #define GLM_FORCE_RADIANS
-#include "shape.hpp"
 #include "box.hpp"
-#include <cmath>
-#include "glm/ext.hpp"
+
 
 
 //Constructor
-Box::Box(): _max{1.0f}, _min{0.0f}
+Box::Box(): Shape{}, _max{1.0f}, _min{0.0f}
 {}
 
-Box::Box(glm::vec3 const& max, glm::vec3 const& min): _max{max}, _min{min}
+Box::Box(glm::vec3 const& max, glm::vec3 const& min):Shape{}, _max{max}, _min{min}
 {}
 
-Box::Box(glm::vec3 const& max, glm::vec3 const& min, std::string name, Color color): _max{max}, _min{min}, Shape(name, color)
+Box::Box(glm::vec3 const& max, glm::vec3 const& min, std::string name, Material material):Shape(name, material),  _max{max}, _min{min}
 {}
 
 Box::~Box()
@@ -44,6 +42,34 @@ double Box::area() const
 
 std::ostream& Box::print(std::ostream& os) const
 {
-	os << "[Box: " << _name << "]\n[Color: " << _color << "]\n[Min: " << glm::to_string(_min) << "]\n[Max: " << glm::to_string(_max) << "]\n";
+	os << "[Box: " << _name << "]\n[Matierial: " << _material << "]\n[Min: " << _min.x << "," << _min.y << "," << _min.z << "]\n[Max: " << _max.x << "," << _max.y << "," << _max.z << "]\n";
 	return os;
+}
+
+
+
+bool Box::intersectBox(Ray const& r) const
+{
+	//Calculate intersection distances of x edges
+	double tx1 = (_min.x - r.origin_.x)/glm::normalize(r.direction_).x;
+	double tx2 = (_max.x - r.origin_.x)/glm::normalize(r.direction_).x;
+	
+	double tnear = std::min(tx1, tx2);
+	double tfar = std::max(tx1, tx2);
+	
+	//Calculate intersection distances of y edges
+	double ty1 = (_min.y - r.origin_.y)/glm::normalize(r.direction_).y;
+	double ty2 = (_max.y - r.origin_.y)/glm::normalize(r.direction_).y;
+	
+	tnear = std::max(tnear, std::min(ty1, ty2));
+	tfar = std::min(tfar, std::max(ty1, ty2));
+	
+	//Calculate intersection distance of z edges
+	double tz1 = (_min.z - r.origin_.z)/glm::normalize(r.direction_).z;
+	double tz2 = (_max.z - r.origin_.z)/glm::normalize(r.direction_).z;
+	
+	tnear = std::max(tnear, std::min(tz1, tz2));
+	tfar = std::min(tfar, std::max(tz1, tz2));
+	
+	return tfar >= std::max(0.0, tnear);
 }
