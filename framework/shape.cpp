@@ -2,22 +2,22 @@
 #include <string>
 #include <iostream>
 
-Shape::Shape():_name{"untitled"} ,_color{1.0f, 1.0f, 1.0f}
+Shape::Shape():_name{"untitled"} ,_material{}
 {}
 
-Shape::Shape(std::string name, Color const& color): _name{name}, _color{color}
+Shape::Shape(std::string name, Material const& material): _name{name}, _material{material}
 {
-	std::cout << "Object created\n";
+	//std::cout << _name << "(Shape) created\n";
 }
 
 Shape::~Shape()
 {
-	std::cout << "Object destroyed\n";
+	//std::cout << _name <<"(Shape) destroyed\n";
 }
 
-Color Shape::color() const
+Material Shape::material() const
 {
-	return _color;
+	return _material;
 }
 
 std::string Shape::name() const
@@ -27,7 +27,7 @@ std::string Shape::name() const
 
 std::ostream& Shape::print(std::ostream& os) const
 {
-	os << "Shape:[Name: " << _name << "][Color: " << _color << "]\n";
+	os << "Shape:[Name: " << _name << "][Material: " << _material << "]\n";
 	return os;
 }
 

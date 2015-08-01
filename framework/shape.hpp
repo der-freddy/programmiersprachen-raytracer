@@ -1,6 +1,6 @@
 #ifndef BUW_SHAPE_HPP
 #define BUW_SHAPE_HPP
-#include "color.hpp"
+#include "material.hpp"
 #include <string>
 #include "ray.hpp"
 
@@ -10,7 +10,7 @@ public:
 
 	//Constructor
 	Shape();
-	Shape(std::string name, Color const& color);
+	Shape(std::string name, Material const& material);
 	//Destructor
 	virtual ~Shape();
 	
@@ -18,17 +18,17 @@ public:
 
 	virtual double volume() const = 0;
 
-	Color color() const;
+	Material material() const;
 
 	std::string name() const;
 
-	virtual std::ostream& print(std::ostream & os) const;
+	virtual std::ostream& print(std::ostream& os) const;
 
 private:
 
 protected:
 	std::string _name;
-	Color _color;
+	Material _material;
 
 };
 

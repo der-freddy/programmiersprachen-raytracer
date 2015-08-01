@@ -5,16 +5,20 @@
 #include "glm/ext.hpp"
 
 //Constructor
-Sphere::Sphere(): _mp{0.0f}, _r{0.0f}
+Sphere::Sphere(): Shape{}, _mp{0.0f}, _r{0.0f}
 {}
-Sphere::Sphere(glm::vec3 const& mp, double r): _mp{mp}, _r{r}
+Sphere::Sphere(glm::vec3 const& mp, double r): Shape{}, _mp{mp}, _r{r}
 {}
 
-Sphere::Sphere(glm::vec3 const& mp, double r, std::string name, Color const& color): _mp{mp}, _r{r}, Shape(name, color)
-{}
+Sphere::Sphere(glm::vec3 const& mp, double r, std::string name, Material const& material): Shape(name, material), _mp{mp}, _r{r} 
+{
+	//std::cout << _name << "(Sphere) created\n";
+}
 
 Sphere::~Sphere()
-{}
+{
+	//std::cout << _name << "(Sphere) destroyed\n";
+}
 
 glm::vec3 Sphere::mp() const
 {
@@ -35,12 +39,11 @@ double Sphere::area() const
 
 std::ostream& Sphere::print(std::ostream& os) const
 {
-	os << "[Sphere: " << _name << "]\n[Color: " << _color << "]\n[Point: " << glm::to_string(_mp) << "]\n[radius: " << _r << "]\n";
+	os << "[Sphere: " << _name << "]\n[Material: " << _material << "]\n[Point: " << glm::to_string(_mp) << "]\n[radius: " << _r << "]\n";
 	return os;
 }
 
-bool Sphere::intersect(Ray ray) const
+bool Sphere::intersect(Ray const& ray, float& d) const
 {
-	float d;
-	return glm::intersectRaySphere(ray.origin, glm::normalize(ray.direction),_mp, _r, d);
+	return glm::intersectRaySphere(ray.origin_, glm::normalize(ray.direction_),_mp, _r, d);
 }

@@ -14,7 +14,7 @@ class Sphere : public Shape
 		Sphere();
 		~Sphere();
 		Sphere(glm::vec3 const& mp, double r);
-		Sphere(glm::vec3 const& mp, double r, std::string name, Color const& color);
+		Sphere(glm::vec3 const& mp, double r, std::string name, Material const& material);
 
 		glm::vec3 mp() const;
 
@@ -24,9 +24,9 @@ class Sphere : public Shape
 
 		double volume() const override;
 
-		std::ostream& print(std::ostream & os) const override;
+		std::ostream& print(std::ostream& os) const override;
 
-		bool intersect(Ray ray) const;
+		bool intersect(Ray const& ray, float& d) const;
 
 	private:
 		glm::vec3 _mp;
